@@ -8,6 +8,7 @@ const app = express();
 dotenv.config();
 app.use(cors());
 ConnectedDB()
+
 app.use((req, res, next) => {
     if (req.path === '/clerk/webhook') {
         next();
