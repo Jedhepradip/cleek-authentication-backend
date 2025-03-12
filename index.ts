@@ -9,6 +9,9 @@ dotenv.config();
 app.use(cors());
 ConnectedDB()
 
+const PORT = 3000;
+
+
 app.use((req, res, next) => {
     if (req.path === '/clerk/webhook') {
         next();
@@ -96,5 +99,6 @@ app.post('/clerk/webhook', express.raw({ type: 'application/json' }), async (req
 });
 
 
-
-app.listen(3000)
+app.listen(PORT, () => {
+    console.log(`\nServer running on http://localhost:${PORT}`);
+})
