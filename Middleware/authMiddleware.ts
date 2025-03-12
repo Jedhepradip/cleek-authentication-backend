@@ -9,6 +9,8 @@ export interface AuthenticatedRequest extends Request {
 }
 
 const protectedRoute = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+    console.log("oko");
+
     if (!req.auth || !req.auth.userId) {
         res.status(401).json({ error: "Unauthorized access" });
     }
