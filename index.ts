@@ -4,10 +4,23 @@ import cors from "cors"
 import * as dotenv from 'dotenv';
 import UserModel from "./models/UserModel";
 import { ConnectedDB } from "./database/db";
+import protectedRoute from "./Middleware/authMiddleware";
+import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
+import { AuthenticatedRequest } from "./Middleware/authMiddleware";
+
 const app = express();
 dotenv.config();
 app.use(cors());
 ConnectedDB()
+
+const PORT = 3000;
+
+app.use(ClerkExpressWithAuth());
+
+app.get("/protected-route", protectedRoute, async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    res.json({ message: "You have access!", userId: req?.auth?.userId });
+    console.log();
+});
 
 app.use((req, res, next) => {
     if (req.path === '/clerk/webhook') {
@@ -94,6 +107,5 @@ app.post('/clerk/webhook', express.raw({ type: 'application/json' }), async (req
         res.status(500).json({ message: "Internal server error", error: error });
     }
 });
-
 
 app.listen(3000)
