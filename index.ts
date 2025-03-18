@@ -96,5 +96,4 @@ app.post('/clerk/webhook', express.raw({ type: 'application/json' }), async (req
 });
 
 
-
 app.listen(3000)
